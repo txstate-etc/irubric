@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+     <bean id="org.sakaiproject.irubric.api.RubricToolService"
+        class="org.sakaiproject.irubric.impl.RubricToolServiceImpl"
+        init-method="init" destroy-method="destroy" scope="singleton">
+        <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+      	<property name="securityService" ref="org.sakaiproject.authz.api.SecurityService" />
+      	<property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService"/>
+      	<property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
+      	<property name="scoringService" ref="org.sakaiproject.scoringservice.api.ScoringService"/>
+        <property name="gradebookService" ref="org_sakaiproject_service_gradebook_GradebookService" />
+        <property name="functionManager" ref="org.sakaiproject.authz.api.FunctionManager" />
+    </bean>
+
+</beans>

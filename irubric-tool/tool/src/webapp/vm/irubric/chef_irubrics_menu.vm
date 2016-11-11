@@ -1,0 +1,155 @@
+<link type="text/css" href="/library/skin/tool_base.css" media="all" rel="stylesheet" />
+<link type="text/css" href="/library/skin/morpheus-default/tool.css" media="all" rel="stylesheet" />
+<script type="text/javascript" src="/irubric-pt-tool/js/jquery.min.js"></script>
+<script type="text/javascript" src="/irubric-pt-tool/js/jquery-ui.min.js"></script>
+<script type="text/javascript"  src="/irubric-pt-tool/js/irubric.js"></script>
+
+<script>
+	$(document).ready(function() {
+		resizeFrame(300);
+	});
+</script>
+
+<ul class="navIntraTool actionToolBar" role="menu">
+	
+	<input type="hidden" id="gradebookUId" value="$gradebookUId" />
+
+	<!--irubric home -->
+	#if($isAllowiRubricHome)
+	<li role="menuitem" class="firstToolBarItem">
+		<!--set link my rubric-->
+		<!---
+		#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doiRubricHome").toString())
+		<span>
+			<a href="$baseURL" title="$!tlang.getString('irub_home')"> 
+				$!tlang.getString("irub_home") 
+			</a>
+		</span>
+		--->
+		<span>
+			<a href="javascript:void(0);" onclick="openWindowiRubric('irubhome')"> 
+				$!tlang.getString("irub_home") 
+			</a>
+		</span>
+	</li>
+	#end
+
+	<!--allow my rubrics -->
+	#if($isAllowMyRubrics)
+	<li role="menuitem">
+		<!--set link my rubric-->
+		#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doMyrubric").toString())
+		<span>
+			<a href="$baseURL" title="$!tlang.getString('irub_myrub')"> 
+				$!tlang.getString("irub_myrub") 
+			</a>
+		</span>
+	</li>
+	#end
+
+	<!--allow access gallery -->
+	#if($isAllowAccessGallery)
+		<li role="menuitem" >
+
+			<!--set link gallery -->
+			#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doGallery").toString())
+			<span >
+				<a href="$baseURL" title="$!tlang.getString('irub_gly')"> 
+					$!tlang.getString("irub_gly") 
+				</a>
+			</span>
+		</li>
+	#end
+
+	<!--allow access build rubric -->
+	#if($isAllowBuild)
+		<li role="menuitem">
+
+			<!--set link build rubric -->
+			#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doBuild").toString())
+			<span>
+				<a href="$baseURL" title="$!tlang.getString('irub_build')"> 
+					$!tlang.getString("irub_build") 
+				</a>
+			</span>
+		</li>
+	#end
+
+	<!--allow access collaborative assessment -->
+	#if($isAllowAssessment)
+		<li role="menuitem">
+			<span>
+				<a href="javascript:void(0);" onclick="openWindowiRubric('asm')" title="$!tlang.getString('irub_assessment')"> 
+					$!tlang.getString("irub_assessment") 
+				</a>
+			</span>
+		</li>
+	#end
+
+	<!--allow iRubric report-->
+	#if($!isAllowReports)
+		<li role="menuitem">
+			<span>
+				<a href="javascript:void(0);" onclick="openWindowiRubric('rpt')"> 
+					$!tlang.getString("irub_rpt") 
+				</a>
+			</span>
+		</li>
+	#end
+		
+	<!--allow grades-->
+	#if($!isAllowGrades)
+		<li role="menuitem">
+			<!--set link grade all -->
+			#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doGradeAll").toString())
+			<span>
+				<a href="$baseURL" title="$tlang.getString('irub_grdall')"> 
+					$!tlang.getString("irub_grdall") 
+				</a>
+			</span>
+		</li>
+	#end
+	
+	<!--allow update site(admin/instructor) -->
+	#if ($isAllowUpdateSite)
+		<!--set link permission -->
+		#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doPermissions").toString())
+
+		<li role="menuitem">
+			<span><a href="$baseURL" title="$tlang.getString('permis')">
+			$tlang.getString('permis')</a>
+			</span>
+		</li>
+	#end
+
+	#if ($isAllowMyePortfolios)
+	<li role="menuitem">
+		<span>
+			<a href="javascript:void(0);" onclick="openWindowiRubric('myepo')"> 
+				$!tlang.getString("irub_myepo") 
+			</a>
+		</span>
+	</li>
+	#end
+
+	#if ($isAllowBuildePortfolios)
+	<li role="menuitem">
+		<span>
+			<a href="javascript:void(0);" onclick="openWindowiRubric('bldepo')"> 
+				$!tlang.getString("irub_bldepo") 
+			</a>
+		</span>
+	</li>
+	#end
+
+	#if ($isAllowAssMatrices)
+	<li role="menuitem">
+		<span>
+			<a href="javascript:void(0);" onclick="openWindowiRubric('amtx')"> 
+				$!tlang.getString("irub_amtx") 
+			</a>
+		</span>
+	</li>
+	#end
+
+</ul>

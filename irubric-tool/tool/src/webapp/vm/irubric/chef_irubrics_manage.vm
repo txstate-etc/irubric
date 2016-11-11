@@ -1,0 +1,17 @@
+<div class="portletBody">
+	<!--allow show link -->
+	#if($allowShowiRubricLink == "true")
+		<!--include file menu -->
+		#parse ("/vm/irubric/chef_irubrics_menu.vm")
+
+		#set ($irubricLink = "")
+		#if($!purpose)
+			#set ($irubricLink = "/irubric-tool/IRubricServlet?siteId="+ $gradebookUId + "&gradebookUid=" + $gradebookUId + "&p=" + $purpose)
+			
+		#end
+		<iframe id="iframeiRubric" width="100%" height="600px" frameBorder="0" src='$irubricLink' #if ($!purpose) style='display:block;' #else style='display:none;' #end ></iframe>
+	#else
+		<!--show message when irubric is not enable(irubric.switch=2 and Sakai_Site_Property=false) -->
+		$!tlang.getString("irub_Enable") 
+	#end
+</div>

@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<web-app id="WebApp_9" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>irubric-tool</display-name>
+	<description>Sakai iRubric Integration</description>
+
+
+	<!-- the following context-param allows the gradebook to generate a random secret for
+	MyFaces ViewState encryption. The encryption algorithm can be customized by
+	changing <param-value>.  See MyFaces wiki for encryption options. However, removal
+	of this context-param disables encryption.  Do not remove!
+	-->
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+	      /WEB-INF/applicationContext.xml
+		</param-value>
+	</context-param>
+
+
+    <!-- Use the Sakai Spring application context wrapper to reach components. -->
+    <listener>
+        <listener-class>org.sakaiproject.util.SakaiContextLoaderListener</listener-class>
+    </listener>
+
+	<!-- iRubric Servlet -->
+	<servlet>
+			<servlet-name>IRubricServlet</servlet-name>
+			<servlet-class>org.sakaiproject.irubric.IRubricServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+			<servlet-name>IRubricServlet</servlet-name>
+			<url-pattern>/IRubricServlet</url-pattern>
+	</servlet-mapping>
+	<!-- End iRubric Servlet -->
+
+	<!--  Sakai filter -->
+    <filter>
+        <filter-name>sakai.request</filter-name>
+        <filter-class>org.sakaiproject.util.RequestFilter</filter-class>
+         <init-param>
+        	<param-name>upload.enabled</param-name>
+        	<param-value>false</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>sakai.request</filter-name>
+        <servlet-name>IRubricServlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+
+
+
+</web-app>

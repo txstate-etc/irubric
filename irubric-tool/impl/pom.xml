@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  	<modelVersion>4.0.0</modelVersion>
+  
+  	<parent>
+        <groupId>org.sakaiproject.irubric-pt</groupId>
+    	<artifactId>irubric-pt</artifactId>
+    	<version>1.0.0</version>
+  	</parent>
+  
+  	<name>iRubric UI Tool Implementation</name>
+    <groupId>org.sakaiproject.irubric-pt</groupId>
+  	<artifactId>irubric-pt-impl</artifactId>
+  	
+  	<packaging>jar</packaging>
+  
+  	<dependencies>
+  		<!-- irubric -->
+    	<dependency>
+      		<groupId>org.sakaiproject.irubric-pt</groupId>
+      		<artifactId>irubric-pt-api</artifactId>
+            <version>${project.version}</version>
+    	</dependency>
+        <dependency>
+            <groupId>org.sakaiproject.irubric-pt</groupId>
+            <artifactId>irubric-pt-bundle</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    	
+    	<!-- Kernel -->
+		<dependency>
+			<groupId>org.sakaiproject.kernel</groupId>
+			<artifactId>sakai-kernel-api</artifactId>
+            <version>${sakai.kernel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.sakaiproject.kernel</groupId>
+            <artifactId>sakai-component-manager</artifactId>
+            <version>${sakai.kernel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.sakaiproject.kernel</groupId>
+			<artifactId>sakai-kernel-util</artifactId>
+             <version>${sakai.kernel.version}</version>
+		</dependency>
+
+        <!-- service gradebook -->
+        <dependency>
+            <groupId>org.sakaiproject.edu-services.gradebook</groupId>
+            <artifactId>gradebook-service-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+
+        <!-- ScoringService integration -->
+	    <dependency>
+	        <groupId>org.sakaiproject.edu-services.scoringservice</groupId>
+	        <artifactId>scoring-service-api</artifactId>
+	        <scope>provided</scope>
+	        <version>${sakai.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
+	</dependencies>
+	
+    <build>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/bundle</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>

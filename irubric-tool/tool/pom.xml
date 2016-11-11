@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+  	<parent>
+        <groupId>org.sakaiproject.irubric-pt</groupId>
+    	<artifactId>irubric-pt</artifactId>
+    	<version>1.0.0</version>
+  	</parent>
+  
+  	<name>iRubric Tool</name>
+    <groupId>org.sakaiproject.irubric-pt</groupId>
+    <artifactId>irubric-pt-tool</artifactId>
+  	
+  	<packaging>war</packaging>
+
+  	<dependencies>         
+        <!-- irubric -->
+        <dependency>
+            <groupId>org.sakaiproject.irubric-pt</groupId>
+            <artifactId>irubric-pt-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+      
+        <dependency>
+            <groupId>org.sakaiproject.irubric-pt</groupId>
+            <artifactId>irubric-pt-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+			<groupId>org.sakaiproject.entitybroker</groupId>
+            <artifactId>entitybroker-utils</artifactId>
+        </dependency>
+        
+        <dependency>
+			<groupId>org.sakaiproject.entitybroker</groupId>
+            <artifactId>entitybroker-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- ScoringService integration -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.sakaiproject.edu-services.scoringservice</groupId>
+            <artifactId>scoring-service-api</artifactId>
+            <version>${sakai.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- GradebookService -->
+        <dependency>
+            <groupId>org.sakaiproject.edu-services.gradebook</groupId>
+            <artifactId>gradebook-service-api</artifactId>
+        </dependency>
+        
+        <!-- Kernel -->
+        <dependency>
+            <groupId>org.sakaiproject.kernel</groupId>
+            <artifactId>sakai-kernel-api</artifactId>
+            <version>${sakai.kernel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.sakaiproject.kernel</groupId>
+            <artifactId>sakai-component-manager</artifactId>
+            <version>${sakai.kernel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.sakaiproject.kernel</groupId>
+            <artifactId>sakai-kernel-util</artifactId>
+            <version>${sakai.kernel.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.sakaiproject.velocity</groupId>
+            <artifactId>sakai-velocity-tool-api</artifactId>
+            <version>${sakai.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.sakaiproject.velocity</groupId>
+            <artifactId>sakai-velocity-tool</artifactId>
+            <version>${sakai.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.sakaiproject.entitybroker</groupId>
+            <artifactId>entitybroker-api</artifactId>
+        </dependency>
+
+        <!-- Others--> 
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+
+        <dependency>
+          <groupId>org.sakaiproject.kernel</groupId>
+                <artifactId>sakai-component-manager</artifactId>
+                <version>${sakai.kernel.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.sakaiproject</groupId>
+            <artifactId>irubric-model</artifactId>
+            <version>${sakai.version}</version>
+            <scope>provided</scope>
+        </dependency>
+	</dependencies>
+    
+</project>

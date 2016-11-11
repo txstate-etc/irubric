@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="false">
+    <bean id="org.sakaiproject.irubric.IRubricScoringAgent" class="org.sakaiproject.irubric.IRubricScoringAgent"
+          init-method="init">
+        <property name="scoringService" ref="org.sakaiproject.scoringservice.api.ScoringService"/>
+        <property name="iRubricService" ref="org.sakaiproject.irubric.model.IRubricService"/>
+        <property name="name" value="iRubric"/>
+        <property name="agentId" value="iRubric"/>
+        <property name="iRubricManager" ref="org.sakaiproject.irubric.model.IRubricManager"/>
+        <property name="serverConfigurationService"
+           			ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+
+    <!-- iRubric bean configuration -->
+   	<bean id="org.sakaiproject.irubric.model.IRubricService" class="org.sakaiproject.irubric.IRubricServiceImpl" init-method="init">
+   		<property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
+   		<property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+   		<property name="courseManagementService" ref="org.sakaiproject.coursemanagement.api.CourseManagementService" />
+   		<property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
+
+   		<property name="gradebookService" ref="org_sakaiproject_service_gradebook_GradebookService" />
+
+   		<property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="iRubricManager" ref="org.sakaiproject.irubric.model.IRubricManager"/>
+
+   	</bean>
+
+    <bean id="org.sakaiproject.irubric.model.IRubricManager" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager" />
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+        <property name="target" ref="org.sakaiproject.irubric.IRubricManagerHibernateImpl"/>
+    </bean>
+    
+    <bean id="org.sakaiproject.irubric.IRubricManagerHibernateImpl"
+          class="org.sakaiproject.irubric.IRubricManagerHibernateImpl">
+        <property name="sessionFactory" ref="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
+        <property name="gradebookService" ref="org_sakaiproject_service_gradebook_GradebookService"/>
+    </bean>
+
+    <bean id="iRubric.AdditionalHibernateMappings"
+          class="org.sakaiproject.springframework.orm.hibernate.impl.AdditionalHibernateMappingsImpl">
+        <property name="mappingResources">
+            <list>
+                <value>org/sakaiproject/irubric/model/GradableObjectRubric.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+
+<!--     <bean id="org.sakaiproject.irubric.model.IRubricManager"
+     class="org.sakaiproject.irubric.IRubricManagerHibernateImpl">
+     <property name="sessionFactory">
+         <ref bean="gradebookSessionFactory" />
+     </property>
+   
+    </bean>   -->
+</beans>

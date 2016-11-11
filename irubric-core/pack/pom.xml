@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>irubric</artifactId>
+		<groupId>org.sakaiproject</groupId>
+		<version>11-SNAPSHOT</version>
+	</parent>
+	<groupId>org.sakaiproject</groupId>
+	<artifactId>irubric-pack</artifactId>
+
+	<packaging>sakai-component</packaging>
+
+	<properties>
+		<deploy.target>components</deploy.target>
+	</properties>
+
+	<dependencies>
+		<!-- internal dependencies -->
+		<dependency>
+			<groupId>org.sakaiproject</groupId>
+			<artifactId>irubric-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+        <dependency>
+            <groupId>org.sakaiproject</groupId>
+            <artifactId>irubric-model</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+	</dependencies>
+	<build>
+		<!-- configure the build to use the standard maven structure -->
+		<sourceDirectory>src/main/java</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>${basedir}/../../bundle</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+		<plugins>
+			<plugin>
+				<inherited>true</inherited>
+				<groupId>org.sakaiproject.maven.plugins</groupId>
+				<artifactId>sakai</artifactId>
+				<configuration>
+					<warSourceDirectory>${basedir}/src/main/webapp</warSourceDirectory>
+				</configuration>
+			</plugin>
+
+		</plugins>
+
+	</build>
+</project>

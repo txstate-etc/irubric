@@ -1,0 +1,149 @@
+
+<div class="portletBody">
+	<!--include file menu -->
+	#parse ("/vm/irubric/chef_irubrics_menu.vm")
+
+	<div>
+		<h3>$!tlang.getString("irub_grdall.title")</h3>
+		<br/>
+	</div>
+
+	<!--paging -->
+	<div class="listNav">
+			<div  class="instruction">
+				$tlang.getString("gen.viewing") $topMsgPos - $btmMsgPos $tlang.getString("gen.of") $allMsgNumber $tlang.getString("gen.items")
+			</div>
+			#if ($pagesize != 0)
+				#if ($goFPButton == "true")
+					<form name="firstpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+						<fieldset><legend>$tlang.getString("gen.first")</legend><input type="submit" name="eventSubmit_doList_first" value="|&lt;" title="$tlang.getString("gen.first")" /></fieldset>
+						<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+					</form>
+				#else
+					<form name="firstpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+						<fieldset><legend>$tlang.getString("gen.first")</legend><input type="submit" name="eventSubmit_doList_first" value="|&lt;" disabled="disabled" /></fieldset>
+						<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+					</form>
+				#end
+				#if ($goPPButton == "true")
+					<form name="prevpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+						<fieldset><legend>$tlang.getString('gen.previous') $pagesize</legend><input type="submit" name="eventSubmit_doList_prev" value="&lt;" title="$tlang.getString('gen.previous') $pagesize" accesskey="p" /></fieldset>
+						<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+					</form>
+				#else
+					<form name="prevpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+						<fieldset><legend>$tlang.getString('gen.previous') $pagesize</legend><input type="submit" name="eventSubmit_doList_prev" value="&lt;" disabled="disabled" /></fieldset>
+						<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+					</form>
+				#end
+			#end	
+			<form name="pagesizeForm" class="inlineForm" method="post" action="#toolForm("$action")">
+				<input type="hidden" name="eventSubmit_doChange_pagesize" value="changepagesize" />
+				<select id="selectPageSize" name="selectPageSize" onchange="document.pagesizeForm.submit();">
+					#foreach ($i in $!pagesizes)
+						<option value="$i" #if($pagesize == $i) selected="selected" #end>$tlang.getString("list.show") $i $tlang.getString("list.itemsper")</option>
+					#end
+				</select>
+				<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+			</form>
+			#if ($pagesize != 0)
+				#if ($goNPButton == "true")
+					<form name="nextpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+						<fieldset><legend>$tlang.getString('gen.next') $pagesize</legend><input type="submit" name="eventSubmit_doList_next" value="&gt;" title="$tlang.getString('gen.next') $pagesize" accesskey="n" /></fieldset>
+						<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+					</form>
+				#else
+					<form name="nextpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+						<fieldset><legend>$tlang.getString('gen.next') $pagesize</legend><input type="submit" name="eventSubmit_doList_next" value="&gt;" disabled="disabled" /></fieldset>
+						<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+					</form>
+				#end
+				#if ($goLPButton == "true")
+					<form name="lastpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+						<fieldset><legend>$tlang.getString('gen.last')</legend><input type="submit" name="eventSubmit_doList_last" value="&gt;|" title="$tlang.getString('gen.last')" /></fieldset>
+						<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+					</form>
+				#else
+					<form name="lastpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+						<fieldset><legend>$tlang.getString('gen.last')</legend><input type="submit" name="eventSubmit_doList_last" value="&gt;|" disabled="disabled" /></fieldset>
+						<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+					</form>
+				#end
+			#end
+	</div>
+	
+	<!--title description -->
+	<div>
+		<h4>$!tlang.getString("irub_gdbitem")</h4>
+		<div class="instruction" style="float:left">
+			$!tlang.getString("irub_action.description") 
+		</div>
+	<div>
+
+	<table class="listHier lines nolines">
+		<tr>
+		    <!--set link sort by title -->
+			#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doSort").setQueryString('criteria=title').toString())
+			<th id="title">
+				<a href="#" onclick="location='$baseURL'; return false;"  title="sort by title"> Title </a>
+			</th>
+
+			<!--set link sort by due date -->
+			#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doSort").setQueryString('criteria=duedate').toString())
+			<th id="duedate">
+				<a href="#" onclick="location='$baseURL'; return false;"  title="sort by due Date"> Due Date </a>
+			</th>
+			
+			<th id="action">iRubric</th>
+		</tr>
+
+		<!--show list gradebook items -->
+		#foreach ($assignment in $assignments)
+
+			<tr>
+				<td headers="title"> $assignment.getAssignment().getName() </td>
+				
+				<td headers="duedate"> 
+					#if($!assignment.getAssignment().getDueDate().toString())
+						$assignment.getAssignment().getDueDate().toString()
+					#else
+						-
+					#end
+				</td>
+				
+				<td headers="action"> 
+						
+					<!--if no attach rubric then link attach irubric  
+						else show link irubric-->
+					#if(!$assignment.isRubricAttached())
+						<!-- able to grade -->
+						#if($isAbleGrade == "true")
+							<a href="#" id="irubric-link" onclick="openSiteiRubric($assignment.getAssignment().getId(),'attach')">
+								<img src="/irubric-pt-tool/images/attach.gif" alt="$tlang.getString("irub_select")"  title="$tlang.getString("irub_select")"></a>	
+						#end
+	          		#else
+	          			<!-- able to grade -->
+	          			#if($isAbleGrade == "true")
+		          			<a href="#" id="irubric-link" onclick="openSiteiRubric($assignment.getAssignment().getId(),'gradeall')">
+								<img src="$iRubricIcon" alt="$tlang.getString("irub_grade_all")"  title="$tlang.getString("irub_grade_all")"></a>
+			          		
+			          		<a href="#" id="irubric-refresh" onclick="getGrades($assignment.getAssignment().getId())">
+			          			<img src="/../library/image/silk/arrow_refresh-blue.png" alt="$tlang.getString("irub_get_grades")" title="$tlang.getString("irub_get_grades")"></a>
+			          	
+			          		<a href="#" id="irubric-link" onclick="openSiteiRubric($assignment.getAssignment().getId(),'sumreport')" >
+			          			<img src="/irubric-pt-tool/images/chart.gif" alt="$tlang.getString("irub_summary")" title="$tlang.getString("irub_summary")"></a>
+		          		#else 
+		          			<input type="hidden" id="studentId" value="$userId" />
+
+		          			<!-- disable to grade -->
+		          			<a href="#" id="irubric-link" onclick="openSiteiRubric($assignment.getAssignment().getId(),'viewgrade')">
+								<img src="$iRubricIcon" alt="$tlang.getString("irub_view_grade")"  title="$tlang.getString("irub_view_grade")"></a>
+		          		#end
+	          		#end
+		   
+				</td>
+			<tr>
+		#end
+	</table>
+
+</div>

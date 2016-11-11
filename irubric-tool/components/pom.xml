@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  	<modelVersion>4.0.0</modelVersion>
+  	
+  	<parent>
+        <groupId>org.sakaiproject.irubric-pt</groupId>
+    	<artifactId>irubric-pt</artifactId>
+    	<version>1.0.0</version>
+  	</parent>
+  	
+  	<name>iRubric Component Pack</name>
+  	<groupId>org.sakaiproject.irubric-pt</groupId>
+  	<artifactId>irubric-pt-pack</artifactId>
+  	
+  	<packaging>sakai-component</packaging>
+  	<properties>
+    	<deploy.target>components</deploy.target>
+  	</properties>
+  	
+  	<dependencies>
+  		<!-- irubric -->
+        <dependency>
+            <groupId>org.sakaiproject.irubric-pt</groupId>
+            <artifactId>irubric-pt-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+  	</dependencies>
+  	
+    <build>
+        <resources>
+            <resource>
+            	<!-- Include DB schema & upgrade scripts -->
+                <directory>${basedir}/..</directory>
+                <includes>
+                    <include>database/**</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>
