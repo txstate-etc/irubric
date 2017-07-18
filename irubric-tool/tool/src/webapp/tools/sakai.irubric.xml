@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <registration>
-    <tool title="iRubric" description="Rubric assessments and outcomes" id="sakai.irubric">
+    <tool title="Rubric Manager" description="Create and manage evaluation rubrics for use in assignments and grading." id="sakai.irubric">
     
 	<category name="course"/>
 	<category name="project"/>
