@@ -35,6 +35,7 @@ public class RubricToolServiceImpl implements RubricToolService
     
     private static final String SORTED_BY_TITLE = "title";
     private static final String SORTED_BY_DUEDATE = "duedate";
+    private static final String SORTED_BY_SORT_ORDER = "sortOrder";
     private static final String EPORTFOLIO = "irubric.eportfolio";
 
 	/**
@@ -218,7 +219,7 @@ public class RubricToolServiceImpl implements RubricToolService
 		catch (Exception e)
 		{
 			// log exception during sorting for helping debugging
-			//M_log.error("have error sort list,sort=" + sort + " ascending=" + ascending );
+			M_log.debug("have error sort list,sort=" + sort + " ascending=" + ascending, e);
 		}
 
 		return assignments;
@@ -274,22 +275,47 @@ public class RubricToolServiceImpl implements RubricToolService
 			
 			if (m_criteria == null)
 			{
-				m_criteria = SORTED_BY_TITLE;
+				m_criteria = SORTED_BY_SORT_ORDER;
 			}
 
-			if (m_criteria.equals(SORTED_BY_TITLE))
+			Assignment assignment1 = (Assignment) o1;
+			Assignment assignment2 = (Assignment) o2;
+
+			if (m_criteria.equals(SORTED_BY_SORT_ORDER))
+			{
+				Integer order1 = assignment1.getSortOrder();
+				Integer order2 = assignment2.getSortOrder();
+				if (order1 == null)
+				{
+					result = -1;
+				}
+				else if (order2 == null)
+				{
+					result = 1;
+				}
+				else if (order1.compareTo(order2) > 0)
+				{
+					result = -1;
+				}
+				else
+				{
+					result = 1;
+				}
+			}
+
+			else if (m_criteria.equals(SORTED_BY_TITLE))
 			{
 				// sorted by the assignment title
-				String s1 = ((Assignment) o1).getName();
-				String s2 = ((Assignment) o2).getName();
+				String s1 = assignment1.getName();
+				String s2 = assignment2.getName();
 				result = compareString(s1, s2);
 			}
 			
 			else if (m_criteria.equals(SORTED_BY_DUEDATE))
 			{
 				// sorted by the assignment due date
-				Date t1 = ((Assignment) o1).getDueDate();
-				Date t2 = ((Assignment) o2).getDueDate();
+				Date t1 = assignment1.getDueDate();
+				Date t2 = assignment2.getDueDate();
 
 				if (t1 == null)
 				{

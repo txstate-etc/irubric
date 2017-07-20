@@ -18,11 +18,8 @@ import org.sakaiproject.cheftool.api.Alert;
 import org.sakaiproject.cheftool.api.Menu;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.event.api.SessionState;
-import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.irubric.api.RubricToolService;
 import org.sakaiproject.javax.PagingPosition;
-import org.sakaiproject.site.api.Site;
-import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.scoringservice.api.ScoringAgent;
 import org.sakaiproject.scoringservice.api.ScoringService;
 import org.sakaiproject.service.gradebook.shared.Assignment;
@@ -70,6 +67,8 @@ public class RubricAction extends PagedResourceActionII
 
 	private static String gradebookUId;
 	private static String userId;
+	private static String siteID;
+	private static String siteRef;
 	
 	/** state sort * */
 	private static final String SORTED_BY = "iRubric.sorted_by";
@@ -140,11 +139,10 @@ public class RubricAction extends PagedResourceActionII
 			context.put("iRubricIcon", scoringService.getAgentById("iRubric").getImageReference());
 
 			//set siteid into state_context_string(need for check permission)
-			String siteId = ToolManager.getCurrentPlacement().getContext();
 			if (state.getAttribute(STATE_CONTEXT_STRING) == null || 
 				((String) state.getAttribute(STATE_CONTEXT_STRING)).length() == 0)
 			{
-				state.setAttribute(STATE_CONTEXT_STRING, siteId);
+				state.setAttribute(STATE_CONTEXT_STRING, siteID);
 			} // if context string is null
 
 			//check show function permission
@@ -152,16 +150,13 @@ public class RubricAction extends PagedResourceActionII
 			context.put("isAllowUpdateSite", Boolean.valueOf(isAllowUpdateSite));
 			
 			//DN 2012-09-21: get gradebookUId
-			gradebookUId = siteId;
+			gradebookUId = siteID;
 	
 			//set var gradebookUId in file vm
 			context.put("gradebookUId",gradebookUId);
 
 			//check permission
 			boolean isAllowBuild, isAllowAccessGallery, isAllowReports, isAllowAssessment, isAllowMyRubrics, isAllowGrades = false;
-		
-			//get site reference
-			String siteRef = SiteService.siteReference(siteId);
 
 			//permission build irubric
 			isAllowBuild = rubService.allowBuildiRubric(userId, siteRef);
@@ -219,6 +214,7 @@ public class RubricAction extends PagedResourceActionII
 		context.put("allowShowiRubricLink",allowShowiRubricLink.toString());
 
 		String mode = (String) state.getAttribute(STATE_MODE);
+		context.put("view", mode);
 		
 		//main page or my rubric or gallery or build
 		if(MODE_MAIN_PAGE.equals(mode) || 
@@ -346,6 +342,7 @@ public class RubricAction extends PagedResourceActionII
 	 */
 	public void doPermissions(RunData data) {
 		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
+		state.setAttribute(STATE_MODE, IRubricService.CMD_PERMISSIONS);
 		
 		// check have allow update Permissions
 		if (SiteService.allowUpdateSite((String) state.getAttribute(STATE_CONTEXT_STRING))) {
@@ -357,14 +354,17 @@ public class RubricAction extends PagedResourceActionII
 			startHelper(data.getRequest(), "sakai.permissions.helper");
 
 			String contextString = (String) state.getAttribute(STATE_CONTEXT_STRING);
-			String siteRef = SiteService.siteReference(contextString);
 			
 			// setup for editing the permissions of the site for this tool, using the roles of this site, too
 			state.setAttribute(PermissionsHelper.TARGET_REF, siteRef);
 
-			// ... with this description
-			state.setAttribute(PermissionsHelper.DESCRIPTION, rb.getString("permissions.description") + " "
-					+ SiteService.getSiteDisplay(contextString));
+			// ... with this description, page header, table header, table header title, role header title, and row header title
+			state.setAttribute(PermissionsHelper.DESCRIPTION, rb.getFormattedMessage("permissions.description", SiteService.getSiteDisplay(contextString)));
+//			state.setAttribute(PermissionsHelper.PAGE_HEADER, rb.getString("permis"));
+//			state.setAttribute(PermissionsHelper.TABLE_HEADER, rb.getString("permisison"));
+//			state.setAttribute(PermissionsHelper.TABLE_HEADER_TITLE, rb.getString("permissions.table.header.title"));
+//			state.setAttribute(PermissionsHelper.TABLE_ROLE_HEADER_TITLE, rb.getString("permisisons.table.role.header.title"));
+//			state.setAttribute(PermissionsHelper.TABLE_ROW_TITLE, rb.getString("permissions.table.row.header.title"));
 
 			// ... showing only locks that are prpefixed with this
 			state.setAttribute(PermissionsHelper.PREFIX, "irubric.");
@@ -442,10 +442,22 @@ public class RubricAction extends PagedResourceActionII
 	{
 		super.initState(state, portlet, data);
 
-		// show the main page first
+		// Get the user ID, site ID and site reference
+		userId = StringUtil.trimToZero(SessionManager.getCurrentSessionUserId());
+		siteID = ToolManager.getCurrentPlacement().getContext();
+		siteRef = SiteService.siteReference(siteID);
+
+		// show the main page or grades page first
 		if (state.getAttribute(STATE_MODE) == null)
 		{
-			state.setAttribute(STATE_MODE, MODE_MAIN_PAGE);
+			if (rubService.allowGrades(userId, siteRef))
+			{
+				state.setAttribute(STATE_MODE, IRubricService.CMD_TOOL_GRADEALL);
+			}
+			else
+			{
+				state.setAttribute(STATE_MODE, MODE_MAIN_PAGE);
+			}
 		}
 		//use for paging
 		if (state.getAttribute(STATE_TOP_PAGE_MESSAGE) == null)
@@ -455,14 +467,6 @@ public class RubricAction extends PagedResourceActionII
 
 		//DN 2013-09-12: allow show irubric tool
 		allowShowiRubricLink = rubService.allowShowiRubricLink();
-
-		//get user id
-		userId = StringUtil.trimToZero(SessionManager.getCurrentSessionUserId());
-		/*
-		if (state.getAttribute(STATE_USER) == null)
-		{
-			state.setAttribute(STATE_USER, UserDirectoryService.getCurrentUser());
-		}*/
 	}
 
 	/**

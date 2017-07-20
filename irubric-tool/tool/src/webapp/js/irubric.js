@@ -104,7 +104,7 @@ function getGrades(gradebookItemId){
     //add purpose
     urlPage = urlPage + "&p=gag&t=gb2";
     
-    $.post(urlPage,'',
+    $.get(urlPage,
         function(data){
             
             if(data != null) {
@@ -134,7 +134,7 @@ function getGrades(gradebookItemId){
                 console.log("Data response is null");
             }
 
-        }, "text/string");
+        });
 }
 
 //create irubric link
