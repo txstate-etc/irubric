@@ -1,15 +1,8 @@
 package org.sakaiproject.irubric.model;
 
-import org.sakaiproject.coursemanagement.api.CourseManagementService;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.site.api.SiteService;
-import org.sakaiproject.tool.api.Session;
-import org.sakaiproject.tool.api.ToolManager;
-import org.sakaiproject.user.api.UserDirectoryService;
-
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.HttpURLConnection;
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,6 +35,7 @@ import java.net.HttpURLConnection;
  	 static final String CMD_IRUBRIC_HOME = "irubhome";
  	 static final String CMD_ASS_MATRIX = "amtx";
  	 static final String CMD_TOOL_GRADEALL = "gradeall";
+ 	 static final String CMD_PERMISSIONS = "perms";
 
    	 static final String NULL_STRING = "null";
    	 static final String EMPTY_STRING = "";
