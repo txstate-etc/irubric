@@ -16,7 +16,6 @@ import org.sakaiproject.irubric.model.IRubricManager;
 import org.sakaiproject.irubric.model.IRubricService;
 import org.sakaiproject.portal.util.URLUtils;
 import org.sakaiproject.service.gradebook.shared.Assignment;
-import org.sakaiproject.service.gradebook.shared.GradeDefinition;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
@@ -39,7 +38,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
+import org.sakaiproject.util.ResourceLoader;
 
 /**
  * iRubric bean - a class working with iRubric server
@@ -89,6 +88,8 @@ public class IRubricServiceImpl implements Serializable, IRubricService {
 	
 	public static final String TYPE_SECTION = "section";
 	public static final String TYPE_GROUP = "group";
+
+	private static ResourceLoader rl = new ResourceLoader("Messages");
 
 	/**
 	 * sets the serverConfigurationService this property is set by
@@ -327,7 +328,6 @@ public class IRubricServiceImpl implements Serializable, IRubricService {
 				.getStrings("irubric.evaluator");
 		this.evaluatee = serverConfigurationService
 				.getStrings("irubric.evaluatee");
-
 	}
 
 	/**
@@ -372,7 +372,7 @@ public class IRubricServiceImpl implements Serializable, IRubricService {
 		}
 
 		if (roleName == null) {
-			throw new Exception("Cannot retrieve the role of current user.");
+			throw new Exception(rl.getString("irubric.cantFindUserRole"));
 		} else {
 			return roleName;
 		}
