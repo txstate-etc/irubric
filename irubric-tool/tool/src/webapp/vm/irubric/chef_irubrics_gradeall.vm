@@ -3,16 +3,15 @@
 	<!--include file menu -->
 	#parse ("/vm/irubric/chef_irubrics_menu.vm")
 
-	<div>
-		<h3>$!tlang.getString("irub_grdall.title")</h3>
-		<br/>
+	<div class="page-header">
+		<h1>$!tlang.getString("irub_gdbitem")</h1>
 	</div>
 
 	<!--paging -->
 	<div class="listNav">
-			<div  class="instruction">
+			<span style="margin: 1em;">
 				$tlang.getString("gen.viewing") $topMsgPos - $btmMsgPos $tlang.getString("gen.of") $allMsgNumber $tlang.getString("gen.items")
-			</div>
+			</span>
 			#if ($pagesize != 0)
 				#if ($goFPButton == "true")
 					<form name="firstpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
@@ -71,14 +70,10 @@
 				#end
 			#end
 	</div>
-	
-	<!--title description -->
-	<div>
-		<h4>$!tlang.getString("irub_gdbitem")</h4>
-		<div class="instruction" style="float:left">
-			$!tlang.getString("irub_action.description") 
-		</div>
-	<div>
+
+	<div class="instruction">
+		$!tlang.getString("irub_action.description") 
+	</div>
 
 	<table class="listHier lines nolines">
 		<tr>

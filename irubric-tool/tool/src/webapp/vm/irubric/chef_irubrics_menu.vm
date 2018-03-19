@@ -1,7 +1,4 @@
-<link type="text/css" href="/library/skin/tool_base.css" media="all" rel="stylesheet" />
-<link type="text/css" href="/library/skin/morpheus-default/tool.css" media="all" rel="stylesheet" />
-<script type="text/javascript" src="/irubric-pt-tool/js/jquery.min.js"></script>
-<script type="text/javascript" src="/irubric-pt-tool/js/jquery-ui.min.js"></script>
+<script type="text/javascript">includeLatestJQuery('sakai-irubric');</script>
 <script type="text/javascript"  src="/irubric-pt-tool/js/irubric.js"></script>
 
 <script>
@@ -37,41 +34,51 @@
 	<!--allow my rubrics -->
 	#if($isAllowMyRubrics)
 	<li role="menuitem">
-		<!--set link my rubric-->
-		#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doMyrubric").toString())
-		<span>
-			<a href="$baseURL" title="$!tlang.getString('irub_myrub')"> 
-				$!tlang.getString("irub_myrub") 
-			</a>
-		</span>
+		#if(!$!view.equals("myr"))
+			<!--set link my rubric-->
+			#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doMyrubric").toString())
+			<span>
+				<a href="$baseURL" title="$!tlang.getString('irub_myrub')">
+					$!tlang.getString("irub_myrub")
+				</a>
+			</span>
+		#else
+			<span class="current">$!tlang.getString("irub_myrub")</span>
+		#end
 	</li>
 	#end
 
 	<!--allow access gallery -->
 	#if($isAllowAccessGallery)
 		<li role="menuitem" >
-
-			<!--set link gallery -->
-			#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doGallery").toString())
-			<span >
-				<a href="$baseURL" title="$!tlang.getString('irub_gly')"> 
-					$!tlang.getString("irub_gly") 
-				</a>
-			</span>
+			#if(!$!view.equals("gly"))
+				<!--set link gallery -->
+				#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doGallery").toString())
+				<span >
+					<a href="$baseURL" title="$!tlang.getString('irub_gly')">
+						$!tlang.getString("irub_gly")
+					</a>
+				</span>
+			#else
+				<span class="current">$!tlang.getString("irub_gly")</span>
+			#end
 		</li>
 	#end
 
 	<!--allow access build rubric -->
 	#if($isAllowBuild)
 		<li role="menuitem">
-
-			<!--set link build rubric -->
-			#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doBuild").toString())
-			<span>
-				<a href="$baseURL" title="$!tlang.getString('irub_build')"> 
-					$!tlang.getString("irub_build") 
-				</a>
-			</span>
+			#if(!$!view.equals("bld"))
+				<!--set link build rubric -->
+				#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doBuild").toString())
+				<span>
+					<a href="$baseURL" title="$!tlang.getString('irub_build')">
+						$!tlang.getString("irub_build")
+					</a>
+				</span>
+			#else
+				<span class="current">$!tlang.getString("irub_build")</span>
+			#end
 		</li>
 	#end
 
@@ -100,25 +107,34 @@
 	<!--allow grades-->
 	#if($!isAllowGrades)
 		<li role="menuitem">
-			<!--set link grade all -->
-			#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doGradeAll").toString())
-			<span>
-				<a href="$baseURL" title="$tlang.getString('irub_grdall')"> 
-					$!tlang.getString("irub_grdall") 
-				</a>
-			</span>
+			#if(!$!view.equals("gradeall"))
+				<!--set link grade all -->
+				#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doGradeAll").toString())
+				<span>
+					<a href="$baseURL" title="$tlang.getString('irub_grdall')">
+						$!tlang.getString("irub_grdall")
+					</a>
+				</span>
+			#else
+				<span class="current">$!tlang.getString("irub_grdall")</span>
+			#end
 		</li>
 	#end
 	
 	<!--allow update site(admin/instructor) -->
 	#if ($isAllowUpdateSite)
-		<!--set link permission -->
-		#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doPermissions").toString())
-
 		<li role="menuitem">
-			<span><a href="$baseURL" title="$tlang.getString('permis')">
-			$tlang.getString('permis')</a>
-			</span>
+			#if(!$!view.equals("perms"))
+				<!--set link permission -->
+				#set ($baseURL=$sakai_ActionURL.reset().setParameter("sakai_action", "doPermissions").toString())
+				<span>
+					<a href="$baseURL" title="$tlang.getString('permis')">
+						$tlang.getString('permis')
+					</a>
+				</span>
+			#else
+				<span class="current">$!tlang.getString("permis")</span>
+			#end
 		</li>
 	#end
 
@@ -151,5 +167,4 @@
 		</span>
 	</li>
 	#end
-
 </ul>

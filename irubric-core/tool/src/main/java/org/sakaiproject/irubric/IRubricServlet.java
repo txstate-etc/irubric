@@ -72,14 +72,11 @@ public class IRubricServlet extends HttpServlet {
 	private static final String CMD_GET_GRADES_BY_GRADEBOOK = "gag";
 	private static final String CMD_GET_GRADES_BY_ROS = "gas";
 	private static final String FIELD = "fieldToUpdate";
-	private static final String ERR_IRUBRIC_UNAVAILABLE = "Sorry, cannot contact iRubric at this time. Please try again in a few minutes. <BR><BR>Should the problems persists, contact your system administrator.";
     private static final String P_RUB_ID = "rubricId";
     //DN 2012-06-04:variables for the redirect link in gradebook and gradebook2
     private static final String TOOL = "t";
     private static final String GB2 = "gb2";
     private static final String CMD_RUBRIC_AVAILALBE = "ra";
-
-    private static final String ERR_MSG = "<br/><br/><div align=center>Error {errorcode}. Please contact your system administator.</div>";
 
     private static final String IRUBRIC_BUNDLE = "Messages";
 
@@ -393,8 +390,9 @@ public class IRubricServlet extends HttpServlet {
 
                 writer.close();
             } catch (Exception e) {
-                LOG.error(ERR_IRUBRIC_UNAVAILABLE, e);
-                renderErrorMessageByCmd(writer, cmd, ERR_IRUBRIC_UNAVAILABLE);
+                String msg = rl.getString("irubric.tryAgain1") + "<br><br>" + rl.getString("irubric.tryAgain2");
+                LOG.error(msg, e);
+                renderErrorMessageByCmd(writer, cmd, msg);
             }
         }
     }
@@ -676,7 +674,7 @@ public class IRubricServlet extends HttpServlet {
    			writer.print("{\"message\": \""+ rl.getFormattedMessage("irubric.errorCode", new Object[] {errorCode}) + "\"}");
    			
    		} else {
-   			writer.print(ERR_MSG.replace("{errorcode}", errorCode));
+   			writer.print("<br/><br/><div align=center>" + rl.getString("irubric.displayErrorCode").replace("{errorcode}", errorCode) + "</div>");
    		}
    	}
 
